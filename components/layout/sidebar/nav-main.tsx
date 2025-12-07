@@ -74,7 +74,7 @@ export const navItems: NavGroup[] = [
         ]
       },
       { title: "Sentinel Events", href: "/sentinal-events", icon: BadgeDollarSignIcon },
-      { title: "Governance", href: "/crm", icon: ChartBarDecreasingIcon },
+      { title: "Governance", href: "/governance", icon: ChartBarDecreasingIcon },
       { title: "Setting", href: "/setting", icon: ActivityIcon },
     ],
   },
