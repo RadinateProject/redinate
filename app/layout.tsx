@@ -35,7 +35,6 @@ export default async function RootLayout({
   );
 
   // ---------------- Sidebar Logic ----------------
-  const defaultOpen = false;
 
   return (
     <html lang="en" suppressHydrationWarning>
@@ -45,7 +44,7 @@ export default async function RootLayout({
         {...bodyAttributes}>
         <ThemeProvider
           attribute="class"
-          defaultTheme="light"
+          defaultTheme="dark"
           enableSystem
           disableTransitionOnChange>
           <ActiveThemeProvider initialTheme={themeSettings}>
