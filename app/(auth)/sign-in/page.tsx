@@ -1,5 +1,5 @@
 'use client';
-import { useEffect, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -32,7 +32,8 @@ import { toast } from "@/hooks/use-toast";
 const DEMO_EMAIL = "info@radinate.com";
 const DEMO_PASSWORD = "Radinate@001";
 
-export default function Page() {
+// Separate component that uses useSearchParams
+function SignInForm() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [showPassword, setShowPassword] = useState(false);
@@ -115,114 +116,146 @@ export default function Page() {
   };
 
   return (
-    <div className="flex items-center justify-center h-screen py-4">
-      <Card className="mx-auto w-96 rounded-2xl border-0 bg-accent">
-        <CardHeader className="text-center pb-2 space-y-0.5">
-          <div className="inline-flex items-center gap-2 mb-0 justify-center pr-3">
-            <img
-              src="/logos/radinate__simple.png"
-              alt="Radinate logo"
-              className="h-18 w-22"
-            />
-          </div>
-          <CardTitle className="text-2xl font-bold pt-0.5 mt-3">
-            Welcome back
-          </CardTitle>
-          <CardDescription className="text-xs pt-0">
-            Sign in to your account to continue.
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)}>
+    <Card className="mx-auto w-96 rounded-2xl border-0 bg-accent">
+      <CardHeader className="text-center pb-2 space-y-0.5">
+        <div className="inline-flex items-center gap-2 mb-0 justify-center pr-3">
+          <img
+            src="/logos/radinate__simple.png"
+            alt="Radinate logo"
+            className="h-18 w-22"
+          />
+        </div>
+        <CardTitle className="text-2xl font-bold pt-0.5 mt-3">
+          Welcome back
+        </CardTitle>
+        <CardDescription className="text-xs pt-0">
+          Sign in to your account to continue.
+        </CardDescription>
+      </CardHeader>
+      <CardContent>
+        <Form {...form}>
+          <form onSubmit={form.handleSubmit(onSubmit)}>
+            <div className="grid gap-2">
               <div className="grid gap-2">
-                <div className="grid gap-2">
-                  <Label htmlFor="email">Email</Label>
-                  <FormField
-                    control={form.control}
-                    name="email"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormControl>
+                <Label htmlFor="email">Email</Label>
+                <FormField
+                  control={form.control}
+                  name="email"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormControl>
+                        <Input
+                          type="email"
+                          placeholder="Email Address"
+                          disabled={isLoading}
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
+              <div className="grid gap-2">
+                <div className="flex items-center">
+                  <Label htmlFor="password">Password</Label>
+                  <Link
+                    href="/forgot-password"
+                    className="ml-auto inline-block text-sm underline">
+                    Forgot your password?
+                  </Link>
+                </div>
+                <FormField
+                  control={form.control}
+                  name="password"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormControl>
+                        <div className="relative">
                           <Input
-                            type="email"
-                            placeholder="Email Address"
+                            type={showPassword ? "text" : "password"}
+                            placeholder="Enter your password"
                             disabled={isLoading}
                             {...field}
                           />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                </div>
-                <div className="grid gap-2">
-                  <div className="flex items-center">
-                    <Label htmlFor="password">Password</Label>
-                    <Link
-                      href="/forgot-password"
-                      className="ml-auto inline-block text-sm underline">
-                      Forgot your password?
-                    </Link>
-                  </div>
-                  <FormField
-                    control={form.control}
-                    name="password"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormControl>
-                          <div className="relative">
-                            <Input
-                              type={showPassword ? "text" : "password"}
-                              placeholder="Enter your password"
-                              disabled={isLoading}
-                              {...field}
-                            />
-                            <button
-                              type="button"
-                              onClick={() => setShowPassword(!showPassword)}
-                              className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
-                              disabled={isLoading}
-                            >
-                              {showPassword ? (
-                                <EyeOff className="h-4 w-4" />
-                              ) : (
-                                <Eye className="h-4 w-4" />
-                              )}
-                            </button>
-                          </div>
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                </div>
-
-                <Button
-                  type="submit"
-                  className="w-full h-10 font-semibold text-sm mt-1"
-                  disabled={isLoading}
-                >
-                  {isLoading ? (  
-                    <>
-                      <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                      Signing in...
-                    </>
-                  ) : (
-                    "Continue"
+                          <button
+                            type="button"
+                            onClick={() => setShowPassword(!showPassword)}
+                            className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
+                            disabled={isLoading}
+                          >
+                            {showPassword ? (
+                              <EyeOff className="h-4 w-4" />
+                            ) : (
+                              <Eye className="h-4 w-4" />
+                            )}
+                          </button>
+                        </div>
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
                   )}
-                </Button>
+                />
               </div>
-            </form>
-          </Form>
-          <div className="mt-4 text-center text-sm">
-            Don&apos;t have an account?{" "}
-            <Link href="/sign-up" className="underline">
-              Sign up
-            </Link>
-          </div>
-        </CardContent>
-      </Card>
+
+              <Button
+                type="submit"
+                className="w-full h-10 font-semibold text-sm mt-1"
+                disabled={isLoading}
+              >
+                {isLoading ? (  
+                  <>
+                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                    Signing in...
+                  </>
+                ) : (
+                  "Continue"
+                )}
+              </Button>
+            </div>
+          </form>
+        </Form>
+        <div className="mt-4 text-center text-sm">
+          Don&apos;t have an account?{" "}
+          <Link href="/sign-up" className="underline">
+            Sign up
+          </Link>
+        </div>
+      </CardContent>
+    </Card>
+  );
+}
+
+// Main page component with Suspense boundary
+export default function Page() {
+  return (
+    <div className="flex items-center justify-center h-screen py-4">
+      <Suspense fallback={
+        <Card className="mx-auto w-96 rounded-2xl border-0 bg-accent">
+          <CardHeader className="text-center pb-2 space-y-0.5">
+            <div className="inline-flex items-center gap-2 mb-0 justify-center pr-3">
+              <img
+                src="/logos/radinate__simple.png"
+                alt="Radinate logo"
+                className="h-18 w-22"
+              />
+            </div>
+            <CardTitle className="text-2xl font-bold pt-0.5 mt-3">
+              Welcome back
+            </CardTitle>
+            <CardDescription className="text-xs pt-0">
+              Sign in to your account to continue.
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <div className="flex items-center justify-center py-8">
+              <Loader2 className="h-6 w-6 animate-spin" />
+            </div>
+          </CardContent>
+        </Card>
+      }>
+        <SignInForm />
+      </Suspense>
     </div>
   );
-}   
+}
