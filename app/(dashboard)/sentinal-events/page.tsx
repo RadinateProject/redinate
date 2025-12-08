@@ -73,8 +73,8 @@ import DynamicSummaryCards, { SummaryCardData } from "@/components/dynamicSummar
 
 const sentinelEvents = [
   {
-    id: "SE-2024-012",
-    date: "2024-12-05",
+    id: "SE-2025-012",
+    date: "2025-12-05",
     tool: "Gleamer BoneView",
     severity: "high",
     category: "False Negative",
@@ -84,8 +84,8 @@ const sentinelEvents = [
     reporter: "Dr. Sarah Johnson"
   },
   {
-    id: "SE-2024-011",
-    date: "2024-12-03",
+    id: "SE-2025-011",
+    date: "2025-12-03",
     tool: "Aidoc Brain CT",
     severity: "critical",
     category: "System Error",
@@ -95,8 +95,8 @@ const sentinelEvents = [
     reporter: "Dr. Michael Chen"
   },
   {
-    id: "SE-2024-010",
-    date: "2024-11-28",
+    id: "SE-2025-010",
+    date: "2025-11-28",
     tool: "Viz.ai Stroke",
     severity: "medium",
     category: "False Positive",
@@ -106,8 +106,8 @@ const sentinelEvents = [
     reporter: "Dr. Emily Rodriguez"
   },
   {
-    id: "SE-2024-009",
-    date: "2024-11-25",
+    id: "SE-2025-009",
+    date: "2025-11-25",
     tool: "Arterys Cardiac",
     severity: "high",
     category: "Bias Issue",
@@ -117,8 +117,8 @@ const sentinelEvents = [
     reporter: "Dr. James Wilson"
   },
   {
-    id: "SE-2024-008",
-    date: "2024-11-20",
+    id: "SE-2025-008",
+    date: "2025-11-20",
     tool: "Gleamer BoneView",
     severity: "low",
     category: "Near Miss",

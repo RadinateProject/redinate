@@ -37,7 +37,7 @@ const aiTools = [
     version: "v2.4.1",
     riskLevel: "low",
     status: "active",
-    lastValidation: "2024-12-01",
+    lastValidation: "2025-12-01",
     drift: "normal",
     issues: 0,
     sites: 21
@@ -47,7 +47,7 @@ const aiTools = [
     version: "v3.1.2",
     riskLevel: "medium",
     status: "active",
-    lastValidation: "2024-11-28",
+    lastValidation: "2025-11-28",
     drift: "minor",
     issues: 2,
     sites: 15
@@ -57,7 +57,7 @@ const aiTools = [
     version: "v4.0.5",
     riskLevel: "low",
     status: "active",
-    lastValidation: "2024-12-03",
+    lastValidation: "2025-12-03",
     drift: "normal",
     issues: 0,
     sites: 18
@@ -67,7 +67,7 @@ const aiTools = [
     version: "v2.8.1",
     riskLevel: "high",
     status: "review",
-    lastValidation: "2024-11-15",
+    lastValidation: "2025-11-15",
     drift: "significant",
     issues: 5,
     sites: 8
@@ -113,37 +113,39 @@ export default function GovernanceDashboard() {
 
   const summaryCards: SummaryCardData[] = [
     {
-      title: "Active AI Tools",
-      value: 4,
-      changeValue: 0,
-      icon: "calendar",
-      bgColor: "blue",
-      changeLabel: "Across 21 sites"
-    },
-    {
-      title: "Validations (30d)",
-      value: 33,
-      changeValue: 94.3,
-      icon: "checkCircle",
-      bgColor: "green",
-      changeLabel: "success rate"
-    },
-    {
-      title: "Open Issues",
-      value: 7,
-      changeValue: 0,
-      icon: "alertCircle",
-      bgColor: "yellow",
-      changeLabel: "3 require attention"
-    },
-    {
-      title: "Compliance Score",
-      value: 96,
+      title: "Active Models",
+      value: 12,
       changeValue: 2,
       icon: "checkCircle",
+      bgColor: "green",
+      changeLabel: "new this quarter"
+    },
+    {
+      title: "Turnaround Time",
+      value: -3,
+      changeValue: -15,
+      icon: "clock",
+      bgColor: "blue",
+      prefix: "",
+      suffix: " min",
+      changeLabel: "improvement vs baseline"
+    },
+    {
+      title: "Throughput",
+      value: 4,
+      changeValue: 12,
+      icon: "trendingUp",
       bgColor: "purple",
-      suffix: "%",
-      changeLabel: "vs last month"
+      suffix: " hr+",
+      changeLabel: "capacity increase"
+    },
+    {
+      title: "Pending Reviews",
+      value: 5,
+      changeValue: -3,
+      icon: "alertCircle",
+      bgColor: "orange",
+      changeLabel: "requiring attention"
     }
   ];
 
