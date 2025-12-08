@@ -56,7 +56,7 @@ export const navItems: NavGroup[] = [
   {
     title: "",
     items: [
-      { title: "Governance Dashboard", href: "/", icon: ChartBarDecreasingIcon },
+      { title: "Governance Dashboard", href: "/governance", icon: ChartBarDecreasingIcon },
       { title: "Applied Model Card ", href: "/applied-modal-card", icon: BadgeDollarSignIcon },
       { title: "Continuous monitoring", href: "/continuous-monitoring", icon: BadgeDollarSignIcon },
       {
