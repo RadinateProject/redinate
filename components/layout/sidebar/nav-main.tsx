@@ -13,6 +13,7 @@ import {
   useSidebar
 } from "@/components/ui/sidebar";
 import {
+  Accessibility,
   ActivityIcon,
   BadgeDollarSignIcon,
   Building2Icon,
@@ -21,6 +22,7 @@ import {
   ChevronRight,
   DockIcon,
   GaugeIcon,
+  ShieldCheckIcon,
   ShoppingBagIcon,
   WalletMinimalIcon,
   type LucideIcon,
@@ -79,9 +81,19 @@ export const navItems: NavGroup[] = [
         href: "#",
         icon: ActivityIcon,
         items: [
-          { title: "Role Based Access", href: "/rbac" },
           { title: "Account Setting", href: "/account" },
           { title: "Safety Alert Notification", href: "/alert-notification" },
+        ]
+      },
+      {
+        title: "Access Management",
+        href: "#",
+        icon: ShieldCheckIcon,
+        items: [
+          { title: "Roles", href: "/access-controll/roles" },
+          { title: "Menu Permission", href: "/access-controll/menu-permission" },
+          { title: "Permission", href: "/access-controll/permission" },
+          { title: "Role Permission", href: "/access-controll/role-permissions" },
         ]
       },
     ],
