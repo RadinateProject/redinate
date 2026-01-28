@@ -26,7 +26,8 @@ import {
 } from "@/components/ui/table";
 import { Upload, X, FileText, CheckCircle2, Search, BrainCircuit, Activity } from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { apiService } from "@/lib/apiServices";
+import { apiService } from "@/lib/api/ApiService";
+import { predictionService } from "@/lib/api/PredictionService";
 import { toast } from "sonner";
 
 type DurationOption = "last_30_days" | "last_3_months" | "last_12_months" | "custom";
@@ -86,7 +87,8 @@ export default function ClinicalValidationBuilder() {
     },
     patient_details: {
       age: 45,
-      sex: "M" as "M" | "F" | "O"
+      sex: "M" as "M" | "F" | "O",
+      state: "CA"
     }
   });
 
@@ -176,14 +178,11 @@ export default function ClinicalValidationBuilder() {
       } else {
         // Mocking response for demo if backend is not ready
         setPredictionResult({
-          status: "Validated",
-          score: 0.95,
-          flags: [],
-          recommendation: "Proceed with clinical validation",
-          details: {
-            risk_level: "Low",
-            confidence: 0.92
-          }
+          decision: "APPROVED",
+          confidence_score: 0.95,
+          claim_id: predictionForm.claim_details.claim_id,
+          transaction_id: "mock-txn-001",
+          reason: "Mock validation: AI confidence is high."
         });
         toast.error(response.error || "Failed to get prediction from server. Showing mock data.");
       }
@@ -935,11 +934,13 @@ export default function ClinicalValidationBuilder() {
                       <div className="flex items-center justify-between p-4 bg-primary/5 rounded-lg border border-primary/10">
                         <div>
                           <p className="text-sm font-medium text-primary">Validation Status</p>
-                          <h2 className="text-3xl font-bold">{predictionResult.status}</h2>
+                          <h2 className="text-3xl font-bold">{predictionResult.decision}</h2>
                         </div>
                         <div className="text-right">
                           <p className="text-sm font-medium text-muted-foreground">Confidence Score</p>
-                          <h2 className="text-3xl font-bold text-primary">{(predictionResult.score * 100).toFixed(1)}%</h2>
+                          <h2 className="text-3xl font-bold text-primary">
+                            {(predictionResult.confidence_score * 100).toFixed(1)}%
+                          </h2>
                         </div>
                       </div>
 
@@ -948,28 +949,36 @@ export default function ClinicalValidationBuilder() {
                           <CardContent className="pt-6">
                             <Label className="text-xs uppercase tracking-wide text-muted-foreground">Risk Level</Label>
                             <div className="mt-1 flex items-center gap-2">
-                              <div className={`h-3 w-3 rounded-full ${predictionResult.details.risk_level === 'Low' ? 'bg-green-500' : 'bg-yellow-500'}`} />
-                              <span className="text-lg font-semibold">{predictionResult.details.risk_level}</span>
+                              <div className={`h-3 w-3 rounded-full ${predictionResult.confidence_score > 0.8 ? 'bg-green-500' : 'bg-yellow-500'
+                                }`} />
+                              <span className="text-lg font-semibold">
+                                {predictionResult.confidence_score > 0.8 ? 'Low' : 'Medium'}
+                              </span>
                             </div>
                           </CardContent>
                         </Card>
                         <Card>
                           <CardContent className="pt-6">
-                            <Label className="text-xs uppercase tracking-wide text-muted-foreground">Confidence</Label>
-                            <div className="mt-1 text-lg font-semibold">{(predictionResult.details.confidence * 100).toFixed(1)}%</div>
+                            <Label className="text-xs uppercase tracking-wide text-muted-foreground">Transaction ID</Label>
+                            <div className="mt-1 text-xs font-mono text-muted-foreground break-all">
+                              {predictionResult.transaction_id || 'N/A'}
+                            </div>
                           </CardContent>
                         </Card>
                       </div>
 
-                      <div className="space-y-2">
-                        <Label className="text-base font-semibold text-foreground">Recommendations</Label>
-                        <div className="p-4 bg-muted/50 rounded-lg border border-muted-foreground/10">
-                          <p className="text-sm leading-relaxed text-muted-foreground">
-                            {predictionResult.recommendation}
-                          </p>
+                      {predictionResult.reason && (
+                        <div className="space-y-2">
+                          <Label className="text-base font-semibold text-foreground">Reason / Note</Label>
+                          <div className="p-4 bg-muted/50 rounded-lg border border-muted-foreground/10">
+                            <p className="text-sm leading-relaxed text-muted-foreground">
+                              {predictionResult.reason}
+                            </p>
+                          </div>
                         </div>
-                      </div>
+                      )}
 
+                      {/* Optional Flags Display if backend returns them */}
                       {predictionResult.flags && predictionResult.flags.length > 0 && (
                         <div className="space-y-2">
                           <Label className="text-base font-semibold text-foreground">Flags Detected</Label>
